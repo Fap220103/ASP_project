@@ -1,0 +1,10 @@
+﻿@model IEnumerable<ShoppingOnline.Models.tb_Categories>
+@foreach (var item in Model)
+{
+    //var url = "/SanPhamTheoCate/" + item.CategoryID;
+    <li class="nav-item">
+        <a class="d-flex py-2 m-2 bg-light rounded-pill" data-bs-toggle="pill" href="/SanPhamTheoCate/" + item.CategoryID">
+            <span class="text-dark" style="width: 130px;">@item.CategoryName</span>
+        </a>
+    </li>
+}

@@ -1,0 +1,105 @@
+﻿@model List<ShoppingOnline.Models.Cart>
+@{
+    ViewBag.Title = "Cart";
+    Layout = "~/Views/Shared/_LayoutClient.cshtml";
+}
+
+<div id="table-container">
+    <table>
+        <tr>
+            <th>Sản phẩm</th>
+            <th>Giá</th>
+            <th>Số lượng</th>
+            <th>Thành tiền</th>
+            <th></th>
+            <th></th>
+        </tr>
+        <tr>
+            <td colspan="4">
+                <hr style="border-top: 1px solid #ccc; margin: 0;" />
+            </td>
+        </tr>
+        @if (ViewBag.Count == 0)
+        {
+            <tr>
+                <td colspan="6">
+                    <p>Bạn chưa có đơn hàng nào</p>
+                </td>
+            </tr>
+        }
+        else
+        {
+            foreach (var item in Model)
+            {
+                <tr style="height:200px">
+                    <td style="width:600px">
+                        <img src="~/Assets/Image/@item.ProductImage" width="70" />
+                        <br />
+                        @item.ProductName
+                    </td>
+                    @using (Html.BeginForm("UpdateCart", "Cart", new { productID = item.ProductID }))
+                    {
+                        <td style="width: 120px">
+                            @item.Price
+                        </td>
+                        <td style="width: 120px">
+                            @{
+                                var quantityID = "quantityID" + item.ProductID;
+                            }
+                            <div class="input-group quantity" style="width: 100px;">
+                                <div class="input-group-btn">
+                                    <button type="button" class="btn btn-sm btn-minus rounded-circle bg-light border" onclick="decreaseValue('@quantityID')">
+                                        <i class="fa fa-minus"></i>
+                                    </button>
+                                </div>
+                                <input type="text" class="form-control form-control-sm text-center border-0" id="@quantityID" name="txtSoluong" value="@item.Quantity">
+                                <div class="input-group-btn">
+                                    <button type="button" class="btn btn-sm btn-plus rounded-circle bg-light border" onclick="increaseValue('@quantityID')">
+                                        <i class="fa fa-plus"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </td>
+                        <td style="width:120px;text-align:center">
+                            @item.TotalPrice
+                        </td>
+                        <td class="icon-delete-cart" style="width:100px;text-align:center">
+                            <a href="@Url.Action("DeleteCart", "Cart", new {productID=item.ProductID})">
+                                <i class="fas fa-times"></i>
+                            </a>
+                        </td>
+                        <td>
+                            <button type="submit">Update</button>
+                        </td>
+                    }
+
+                </tr>
+            }
+            <tr style="font-weight:bold;color:red">
+                <td colspan="2">TỔNG</td>
+                <td style="text-align:center">
+                    @ViewBag.TotalQuantity
+                </td>
+                <td>
+
+                    @ViewBag.TotalPrice VND
+                </td>
+            </tr>
+        }
+
+    </table>
+</div>
+<hr class="horizontal" />
+<div class="underCart">
+    <a href="#" class="underCart-left">TIẾP TỤC MUA SẮM</a>
+    <div class="underCart-right">
+        <p style="font-size: 20px;">Giỏ hàng</p>
+        <div class="underCart-right-group">
+            <p style="font-size: 16px;">Tổng tiền</p>
+            <p style="color: red;font-size: 16px;">@ViewBag.TotalPrice VND</p>
+        </div>
+        <a href="#" class="underCart-right-button">THANH TOÁN</a>
+    </div>
+</div>
+<script src="~/Assets/Client/js/ChangePass/ButtonChange.js"></script>
+
